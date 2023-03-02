@@ -1,10 +1,15 @@
 import { PerspectiveCamera, useHelper } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { CameraHelper } from "three";
 
 export const Camera = () => {
   const ref = useRef();
   useHelper(ref, CameraHelper, "red");
+
+  useFrame(() => {
+    // console.log(ref.current.position);
+  }, []);
   return (
     <>
       <PerspectiveCamera

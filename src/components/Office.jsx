@@ -6,6 +6,7 @@ import { TransformControls, useGLTF, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 import React, { useLayoutEffect, useRef } from "react";
+import { useControls } from "leva";
 
 export const FLOOR_HEIGHT = 2.3;
 export const NB_FLOORS = 3;
@@ -19,8 +20,20 @@ export function Office(props) {
 
   const scroll = useScroll();
 
+  const { position, rotation } = useControls("mesh", {
+    position: {
+      value: { x: 0.5, y: -1, z: -1 },
+      step: 0.5,
+    },
+    rotation: {
+      value: { x: 0, y: -Math.PI / 3, z: 0 },
+      step: 0.5,
+    },
+  });
+
   useFrame(() => {
     tl.current.seek(scroll.offset * tl.current.duration());
+    // console.log(ref.current.position);
   });
 
   useLayoutEffect(() => {
@@ -125,8 +138,8 @@ export function Office(props) {
         {...props}
         dispose={null}
         ref={ref}
-        position={[0.5, -1, -1]}
-        rotation={[0, -Math.PI / 3, 0]}
+        position={[position.x, position.y, position.z]}
+        rotation={[rotation.x, rotation.y, rotation.z]}
       >
         <mesh
           geometry={nodes["01_office"].geometry}
